@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Zamów naprzód — prototyp (HIP-101)</title>
+<meta name="description" content="Brandowany prototyp aplikacji: zamów kawę i wypieki z wyprzedzeniem, zapłać telefonem, odbierz bez kolejki.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link id="fontlink" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<div class="stage">
+  <!-- floating brand switcher (demo convenience) -->
+  <div class="switcher" id="switcher" aria-label="Wybór marki"></div>
+
+  <div class="phone" id="phone">
+    <div class="notch"></div>
+    <div class="app" id="app">
+
+      <!-- STATUS BAR -->
+      <div class="statusbar">
+        <span id="clock">8:14</span>
+        <span class="sb-icons">▮▮▮ 5G ▮</span>
+      </div>
+
+      <!-- SCREENS -->
+      <main class="screens" id="screens">
+
+        <!-- HOME -->
+        <section class="screen is-active" data-screen="home">
+          <div class="hero">
+            <div class="brandmark" id="brandmark">TS</div>
+            <div class="brandname" id="brandname">Twoja Sieć</div>
+            <h1 class="hero-title" id="heroTitle">Zamów naprzód. Odbierz bez kolejki.</h1>
+            <p class="hero-msg" id="heroMsg">Kawa i wypieki gotowe na Twoją godzinę.</p>
+            <div class="hero-stats" id="heroStats"></div>
+            <button class="btn btn-primary btn-lg pulse" data-go="menu" id="heroCta">Zamów i odbierz</button>
+            <div class="hero-trust">
+              <span>⚡ BLIK</span><span> Apple Pay</span><span>G Pay</span><span>· bez zbędnego zaliza</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- MENU -->
+        <section class="screen" data-screen="menu">
+          <header class="scr-head">
+            <button class="iconbtn" data-back="home">‹</button>
+            <div class="scr-title">Menu</div>
+            <div class="pill" id="pickupPill">Odbiór 8:30</div>
+          </header>
+          <div class="chips" id="catChips"></div>
+          <div class="menu-list" id="menuList"></div>
+        </section>
+
+        <!-- CART -->
+        <section class="screen" data-screen="cart">
+          <header class="scr-head">
+            <button class="iconbtn" data-back="menu">‹</button>
+            <div class="scr-title">Twoje zamówienie</div>
+            <div></div>
+          </header>
+          <div class="cart-list" id="cartList"></div>
+          <div class="pickup-block">
+            <div class="pickup-label">Godzina odbioru — omijasz kolejkę</div>
+            <div class="time-chips" id="timeChips"></div>
+          </div>
+          <div class="summary" id="cartSummary"></div>
+          <div class="scr-foot">
+            <button class="btn btn-primary btn-lg" data-go="pay" id="toPay">Do płatności</button>
+          </div>
+        </section>
+
+        <!-- PAY -->
+        <section class="screen" data-screen="pay">
+          <header class="scr-head">
+            <button class="iconbtn" data-back="cart">‹</button>
+            <div class="scr-title">Płatność</div>
+            <div></div>
+          </header>
+          <div class="pay-wrap">
+            <div class="pay-amount" id="payAmount">0,00 zł</div>
+            <div class="pay-methods">
+              <button class="pay-btn blik" data-pay="BLIK"><b>BLIK</b><span>6-cyfrowy kod</span></button>
+              <button class="pay-btn apple" data-pay="Apple Pay"> Apple Pay</button>
+              <button class="pay-btn gpay" data-pay="Google Pay"><b>G</b> Google Pay</button>
+            </div>
+            <div class="pay-processing" id="payProcessing">
+              <div class="spinner"></div><span>Przetwarzanie płatności…</span>
+            </div>
+            <p class="pay-note">Płatność w &lt;10&nbsp;s — bez gotówki, bez czekania na kasie.</p>
+          </div>
+        </section>
+
+        <!-- CONFIRM -->
+        <section class="screen" data-screen="confirm">
+          <div class="confirm-wrap">
+            <div class="check" id="checkMark">✓</div>
+            <h2 class="confirm-title">Zamówienie przyjęte</h2>
+            <p class="confirm-sub" id="confirmSub">Odbiór o 8:30 — pomiń kolejkę.</p>
+            <div class="qr" id="qr"><div class="qr-inner"></div></div>
+            <div class="qr-label">Pokaż kod na dedykowanej półce odbioru</div>
+            <div class="tracker" id="tracker">
+              <div class="step done"><i></i>Przyjęte</div>
+              <div class="step" id="stepPrep"><i></i>W przygotowaniu</div>
+              <div class="step" id="stepReady"><i></i>Gotowe do odbioru</div>
+            </div>
+            <button class="btn btn-primary btn-lg" data-go="loyalty">Twój profil i punkty</button>
+          </div>
+        </section>
+
+        <!-- LOYALTY -->
+        <section class="screen" data-screen="loyalty">
+          <header class="scr-head">
+            <div></div><div class="scr-title">Twój profil</div><div></div>
+          </header>
+          <div class="loyalty-wrap">
+            <div class="loyalty-card" id="loyaltyCard">
+              <div class="lc-top"><span id="lcBrand">Twoja Sieć</span><span class="lc-chip">CLUB</span></div>
+              <div class="lc-name">Anna Kowalska</div>
+              <div class="lc-points"><b id="lcPoints">240</b> pkt · następna kawa gratis za 60</div>
+              <div class="lc-bar"><i id="lcBar" style="width:80%"></i></div>
+            </div>
+            <div class="owned">🔒 Profil i historia należą do sieci — nie do operatora „pudełka”. First-party dane działają na wszystkich lokalizacjach.</div>
+            <div class="history-title">Historia zakupów</div>
+            <div class="history" id="history"></div>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- TABBAR -->
+      <nav class="tabbar" id="tabbar">
+        <button data-go="home" class="is-active">Start</button>
+        <button data-go="menu">Menu</button>
+        <button data-go="cart">Koszyk <span class="cart-badge" id="cartBadge">0</span></button>
+        <button data-go="loyalty">Profil</button>
+      </nav>
+
+      <!-- flying dot for add-to-cart animation -->
+      <div class="fly" id="fly"></div>
+    </div>
+  </div>
+
+  <!-- DEMO MODE overlay -->
+  <button class="demo-toggle" id="demoToggle">🎯 Tryb demo: pokaż bóle</button>
+  <div class="demo-legend" id="demoLegend"></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/motion@10.18.0/dist/motion.min.js"></script>
+<script src="data/brands.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
