@@ -66,8 +66,18 @@
   }
 
   /* ---------- menu ---------- */
+  function injectCollectBanner() {
+    if ($("#collectBanner")) return;
+    var head = $('.screen[data-screen="menu"] .scr-head');
+    if (!head) return;
+    var b = document.createElement("div");
+    b.id = "collectBanner"; b.className = "collect-banner";
+    b.innerHTML = '<span class="dot"></span><span>Zamówienie z odbiorem — <b>będzie gotowe o ' + pickup + '</b>, bez kolejki</span>';
+    head.insertAdjacentElement("afterend", b);
+  }
   function renderMenu() {
     var cats = CAT[brand.focus] || CAT.coffee;
+    injectCollectBanner();
     var chips = $("#catChips"); chips.innerHTML = "";
     cats.forEach(function (c, i) {
       var el = document.createElement("button");
@@ -147,7 +157,7 @@
     ["Teraz +15 min", "8:30", "9:00", "12:30", "17:30"].forEach(function (t, i) {
       var el = document.createElement("button"); el.className = "tchip" + ((t === pickup || (i === 1 && pickup === "8:30")) ? " is-active" : "");
       el.textContent = t;
-      el.onclick = function () { pickup = t; $$(".tchip", wrap).forEach(function(x){x.classList.remove("is-active");}); el.classList.add("is-active"); $("#pickupPill").textContent = "Odbiór " + t; $("#confirmSub").textContent = "Odbiór o " + t + " — pomiń kolejkę."; };
+      el.onclick = function () { pickup = t; $$(".tchip", wrap).forEach(function(x){x.classList.remove("is-active");}); el.classList.add("is-active"); $("#pickupPill").textContent = "Odbiór " + t; $("#confirmSub").textContent = "Odbiór o " + t + " — pomiń kolejkę."; var cb = $("#collectBanner"); if (cb) cb.querySelector("b").textContent = "będzie gotowe o " + t; };
       wrap.appendChild(el);
     });
   }
@@ -191,7 +201,6 @@
     if (name === "loyalty") { renderHistory(); if (M) M.animate("#lcBar", { width: ["0%", "80%"] }, { duration: 1 }); }
     if (name === "confirm") { $("#checkMark").style.animation = "none"; void $("#checkMark").offsetWidth; $("#checkMark").style.animation = ""; }
     renderPain(name);
-    if (M) M.animate(scr, { opacity: [0.4, 1], transform: ["translateX(24px)", "none"] }, { duration: 0.35, easing: [.2,.8,.2,1] });
   }
 
   /* ---------- demo mode: pains ---------- */
